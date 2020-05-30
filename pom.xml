@@ -19,10 +19,6 @@
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-thymeleaf</artifactId>
-        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -105,6 +101,8 @@
 
 
 
+
+
     </dependencies>
 
     <build>
@@ -113,7 +111,17 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
+
+            <plugin>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-maven-plugin</artifactId>
+                <version>6.4.3</version>
+                <configuration>
+                    <url>jdbc:mysql://localhost:3306/info?useSSL=false</url>
+                    <user>root</user>
+                    <password>123456</password>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
-
 </project>

@@ -5,6 +5,13 @@
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/css/bootstrap-theme.min.css}">
     <script src="/js/bootstrap.min.js" type="application/javascript"></script>
+
+<!--    <link rel="stylesheet" th:href="@{/css/community.css}">-->
+    <!-- 设置标签logo -->
+    <link rel="icon" th:href="@{/img/icon.png}" type="image/x-icon"/>
+    <script th:src="@{/js/jquery-3.4.1.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}" type="application/javascript"></script>
+<!--    <script th:src="@{/js/community.js}" type="application/javascript"></script>-->
     <title>小小校园</title>
 </head>
 <body>
@@ -29,10 +36,11 @@
                 <button type="submit" class="btn btn-default">搜索</button>
             </form>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="https://github.com/login/oauth/authorize?client_id=1db7187bf4bd2227f3b6&redirect_uri=http://localhost:8887/callback&scope=user&state=1">登录</a></li>
-                <li class="dropdown">
+                <!-- 只有session中没有user的信息的时候，才允许用户登录 -->
+                <li th:if="${session.user == null}"><a href="https://github.com/login/oauth/authorize?client_id=1db7187bf4bd2227f3b6&redirect_uri=http://localhost:8887/callback&scope=user&state=1">登录</a></li>
+                <li class="dropdown" th:if="${session.user!=null}">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                       aria-expanded="false">我<span class="caret"></span></a>
+                       aria-expanded="false" th:text="${session.user.getName()}"><span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="#">消息中心</a></li>
                         <li><a href="#">个人资料</a></li>
