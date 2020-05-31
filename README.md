@@ -8,3 +8,21 @@
 > href="https://github.com/login/oauth/authorize?client_id=1db7187bf4bd2227f3b6&redirect_uri=http://localhost:8887/callback&scope=user&status=1"
 >https://api.github.com/user?access_token=e2732197d11e9440e7d819fff86d757c8473a73f
 
+```sql
+create table info
+(
+    id            int auto_increment
+        primary key,
+    creator       int           null,
+    title         varchar(50)   null,
+    description   text          null,
+    gmt_create    bigint        null,
+    gmt_modified  bigint        null,
+    comment_count int           null,
+    view_count    int default 0 null,
+    like_count    int default 0 null,
+    tag           varchar(50)   null
+);
+
+alter table info alter column comment_count set default 0;
+```

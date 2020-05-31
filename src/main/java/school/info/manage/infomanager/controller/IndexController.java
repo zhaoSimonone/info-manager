@@ -5,11 +5,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import school.info.manage.infomanager.dto.InfoDTO;
+import school.info.manage.infomanager.mapper.InfoMapper;
 import school.info.manage.infomanager.mapper.UserMapper;
 import school.info.manage.infomanager.model.User;
+import school.info.manage.infomanager.service.InfoService;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @Controller
 public class IndexController {
@@ -17,8 +21,12 @@ public class IndexController {
   @Autowired
   private UserMapper userMapper;
 
+  @Autowired
+  private InfoService infoService;
+
   @GetMapping("/")
-  public String hello(HttpServletRequest request) {
+  public String hello(HttpServletRequest request,
+                      Model model) {
     //TODO 针对用户直接访问index页面的时候，如果用户已经经过了授权且登录了，
     // 那么用户下次可以直接进行登录，若用户根本就没有进行登录，那么则没办法得到user的信息
     //cookie 从请求中获取cookid，添加cookid到response中
@@ -38,6 +46,10 @@ public class IndexController {
       }
     }
 
+    //一个Info表关联着一个creator，也就是user，service的目的就是来组装这两张表
+    //InfoDTO不仅包含着Info的信息，还包含着user的信息
+    List<InfoDTO> list = infoService.list();
+    model.addAttribute("list",list);
     //用户发起请求访问index页面的时候，如果携带了token，那么
     return "index";
   }

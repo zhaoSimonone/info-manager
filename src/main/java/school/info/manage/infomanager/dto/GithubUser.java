@@ -2,7 +2,6 @@ package school.info.manage.infomanager.dto;
 
 import lombok.Data;
 
-
 @Data
 public class GithubUser {
     private String name;

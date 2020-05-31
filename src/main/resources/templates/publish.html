@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<!-- 主页 -->
 <head>
     <meta http-equiv="Conteno-Type" content="text/html" ; charset="UTF-8">
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
@@ -12,12 +11,11 @@
     <link rel="icon" th:href="@{/img/icon.png}" type="image/x-icon"/>
     <script th:src="@{/js/jquery-3.4.1.min.js}"></script>
     <script th:src="@{/js/bootstrap.min.js}" type="application/javascript"></script>
-<!--    <script th:src="@{/js/community.js}" type="application/javascript"></script>-->
-    <title>小小校园</title>
+    <!--    <script th:src="@{/js/community.js}" type="application/javascript"></script>-->
+    <title>发布</title>
 </head>
-<body>
+<body class="body">
 
-<!-- 导航栏 -->
 <nav class="navbar navbar-default">
     <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
@@ -26,7 +24,7 @@
                     data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
                 <span class="sr-only">校园说</span>
             </button>
-            <a class="navbar-brand" href="#"><img src="/img/icon.png" style="width:30px;height:30px"></a>
+            <a class="navbar-brand" href="/"><img src="/img/icon.png" style="width:30px;height:30px"></a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -38,19 +36,12 @@
                 <button type="submit" class="btn btn-default">搜索</button>
             </form>
             <ul class="nav navbar-nav navbar-right">
-                <li th:if="${session.user!=null}">
-                    <a href="/publish">
-                        发布
-                    </a>
-                </li>
                 <!-- 只有session中没有user的信息的时候，才允许用户登录 -->
-                <li th:if="${session.user == null}">
-                    <a href="https://github.com/login/oauth/authorize?client_id=1db7187bf4bd2227f3b6&redirect_uri=http://localhost:8887/callback&scope=user&state=1">
-                        登录
-                    </a>
+                <li th:if="${session.user == null}"><a
+                        href="https://github.com/login/oauth/authorize?client_id=1db7187bf4bd2227f3b6&redirect_uri=http://localhost:8887/callback&scope=user&state=1">登录</a>
                 </li>
                 <li class="dropdown" th:if="${session.user!=null}">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" rolNe="button" aria-haspopup="true"
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                        aria-expanded="false" th:text="${session.user.getName()}"><span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="#">消息中心</a></li>
@@ -62,29 +53,36 @@
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
 </nav>
-
 <div class="container-fluid main">
     <div class="row">
         <!-- 当屏幕尺寸为large的时候，这部分占据屏幕的宽度的9份(总的为12份)，当屏幕尺寸为md，sm，xs的时候都是占据整个屏幕-->
         <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
-            <h2><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span>发现</h2>
+            <h2><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>发起</h2>
             <hr>
-            <div class="media" th:each="infoDTO : ${list}">
-                <div class="media-left">
-                    <a href="#">
-                        <img class="media-object media-pic img-rounded" th:src="${infoDTO.user.getAvatarUrl()}">
-                    </a>
+            <form action="/publish" method="post">
+                <div class="form-group">
+                    <label for="title">标题(简明扼要):</label>
+                    <input type="text" class="form-control" id="title" name="title" placeholder="标题..." th:value="${title}">
                 </div>
-                <div class="media-body">
-                    <h4 class="media-heading" th:text="${infoDTO.getTitle()}"></h4>
-                    <!--如果description太长，则截取一部分-->
-                    <span th:text="${infoDTO.getDescription().length() > 20}?${infoDTO.getDescription().substring(0,20)}:${infoDTO.getDescription()}"></span><br>
-                    <span class="media-text"><span th:text="${infoDTO.getCommentCount()}"/>个回复 .<span th:text="${infoDTO.getViewCount()}"/>次浏览.<span th:text="${#dates.format(infoDTO.getGmtCreate(),'yyyy-MM-dd')}"/></span>
+
+                <div class="form-group">
+                    <label for="description">内容(必填，请参照右侧提示):</label>
+                    <textarea name="description" id="description" class="form-control" cols="30" rows="10" th:text="${description}"></textarea>
                 </div>
-            </div>
+
+                <div class="form-group">
+                    <label for="tag">添加标签:</label>
+                    <input type="text" class="form-control" id="tag" name="tag" placeholder="输入标签,以,隔开" th:value="${tag}">
+                </div>
+                <p style="color: red" th:text="${error}" th:if="${not #strings.isEmpty(error)}"></p>
+                <button type="submit" class="btn btn-success btn-publish">提交</button>
+            </form>
         </div>
         <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
-            <h3>热门话题</h3>
+            <h3>问题发起指南</h3>
+            • 标题: 请用精简的语言描述您发布的内容，不超过25字 <br>
+            • 内容: 详细补充您的内容<br>
+            • 选择标签: 选择一个或者多个合适的标签，用逗号隔开，每个标签不超过10个字<br>
         </div>
     </div>
 </div>

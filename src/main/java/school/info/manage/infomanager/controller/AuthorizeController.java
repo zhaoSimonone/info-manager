@@ -55,31 +55,40 @@ public class AuthorizeController {
     String accessToken = githubProvider.getAccessToken(accessTokenDTO);
     GithubUser githubUser = githubProvider.getUser(accessToken);
 
-    if (githubUser != null) {
+    if (githubUser != null && githubUser.getId() != null) {
       String userName = githubUser.getName();
       //拿到github账户的user信息并打印
       log.info("githubUserName: " + userName);
       log.info("githubUserID: " + githubUser.getId());
 
       User user = new User();
-      //随机生成一个UUID，存入数据库，然后将其作为判断其是否登录的依据
-      String token = UUID.randomUUID().toString();
-      user.setToken(token);
       if (githubUser.getName() == null) {
         user.setName("Hikari");
       } else {
         user.setName(githubUser.getName());
       }
+      //随机生成一个UUID，存入数据库，然后将其作为判断其是否登录的依据
+      String token = UUID.randomUUID().toString();
+      user.setToken(token);
+
+      //设置accountID,也就是用户的ID
       user.setAccountId(String.valueOf(githubUser.getId()));
+
       //创建时间
       user.setGmtCreate(System.currentTimeMillis());
+
       //修改时间
       user.setGmtModified(user.getGmtCreate());
+
+      //用户头像的URL
+      user.setAvatarUrl(githubUser.getAvatarUrl());
+
       //将读取的数据写入数据库
       userMapper.insert(user);
 
       //add cookie到response中
       response.addCookie(new Cookie("token", token));
+
       //从request中获取session，并将"token"放入session中
       request.getSession().setAttribute("user", user);
 

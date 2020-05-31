@@ -1,0 +1,1 @@
+alter table info alter column comment_count set default 0;

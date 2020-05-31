@@ -1,0 +1,23 @@
+/*publish页面文本输入框div的样式*/
+.body{
+    background-color: #efefef;
+}
+
+.main{
+    margin: 30px;
+    background-color:white;
+}
+
+.btn-publish{
+    float: right;
+    margin-bottom: 15px;
+}
+.media-pic{
+    width: 40px;
+    height: 40px;
+}
+.media-text{
+    font-size: 12px;
+    font-weight: normal;
+    color: #999999;
+}
