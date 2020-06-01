@@ -58,8 +58,8 @@ public class AuthorizeController {
     if (githubUser != null && githubUser.getId() != null) {
       String userName = githubUser.getName();
       //拿到github账户的user信息并打印
-      log.info("githubUserName: " + userName);
-      log.info("githubUserID: " + githubUser.getId());
+//      log.info("githubUserName: " + userName);
+//      log.info("githubUserID: " + githubUser.getId());
 
       User user = new User();
       if (githubUser.getName() == null) {
