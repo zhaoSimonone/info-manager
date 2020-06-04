@@ -5,7 +5,6 @@
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/css/bootstrap-theme.min.css}">
     <link rel="stylesheet" th:href="@{/css/info.css}">
-    <script src="/js/bootstrap.min.js" type="application/javascript"></script>
 
     <!-- 设置标签logo -->
     <link rel="icon" th:href="@{/img/icon.png}" type="image/x-icon"/>
@@ -16,43 +15,11 @@
 </head>
 <body class="body">
 
-<nav class="navbar navbar-default">
-    <div class="container-fluid">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
-                    data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                <span class="sr-only">校园说</span>
-            </button>
-            <a class="navbar-brand" href="/"><img src="/img/icon.png" style="width:30px;height:30px"></a>
-        </div>
 
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <form class="navbar-form navbar-left">
-                <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Search">
-                </div>
-                <button type="submit" class="btn btn-default">搜索</button>
-            </form>
-            <ul class="nav navbar-nav navbar-right">
-                <!-- 只有session中没有user的信息的时候，才允许用户登录 -->
-                <li th:if="${session.user == null}"><a
-                        href="https://github.com/login/oauth/authorize?client_id=1db7187bf4bd2227f3b6&redirect_uri=http://localhost:8887/callback&scope=user&state=1">登录</a>
-                </li>
-                <li class="dropdown" th:if="${session.user!=null}">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                       aria-expanded="false" th:text="${session.user.getName()}"><span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">消息中心</a></li>
-                        <li><a href="#">个人资料</a></li>
-                        <li><a href="#">退出登录</a></li>
-                    </ul>
-                </li>
-            </ul>
-        </div><!-- /.navbar-collapse -->
-    </div><!-- /.container-fluid -->
-</nav>
+<!-- 引入导航栏 -->
+<div th:insert="navigation :: nav"></div>
+
+<!--主页显示部分-->
 <div class="container-fluid main">
     <div class="row">
         <!-- 当屏幕尺寸为large的时候，这部分占据屏幕的宽度的9份(总的为12份)，当屏幕尺寸为md，sm，xs的时候都是占据整个屏幕-->

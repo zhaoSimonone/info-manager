@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import school.info.manage.infomanager.dto.AccessTokenDTO;
 import school.info.manage.infomanager.dto.GithubUser;
 import school.info.manage.infomanager.mapper.UserMapper;
+import school.info.manage.infomanager.model.Info;
 import school.info.manage.infomanager.model.User;
 import school.info.manage.infomanager.provider.GithubProvider;
 
@@ -45,6 +46,7 @@ public class AuthorizeController {
                          HttpServletRequest request,
                          HttpServletResponse response) {
 
+    Info info = Info.builder().tag("hello").description("今天不错").build();
     AccessTokenDTO accessTokenDTO = new AccessTokenDTO();
     accessTokenDTO.setClient_id(clientId);
     accessTokenDTO.setClient_secret(clientSecret);
@@ -60,10 +62,23 @@ public class AuthorizeController {
       //拿到github账户的user信息并打印
 //      log.info("githubUserName: " + userName);
 //      log.info("githubUserID: " + githubUser.getId());
+      //TODO 2020-6-3-22:07
+
+      //如果数据库中有对应的用户，则不需要再添加数据到数据库
+      User findUser = userMapper.findUserByAccountId(githubUser.getId());
+      if (findUser != null){
+        //从request中获取session，并将"token"放入session中
+        request.getSession().setAttribute("user", findUser);
+
+        //add cookie到response中
+        response.addCookie(new Cookie("token", findUser.getToken()));
+        return "redirect:/";
+      }
 
       User user = new User();
+      //如果Github账号没有设置name，那我们就为其添加一个默认的名字
       if (githubUser.getName() == null) {
-        user.setName("Hikari");
+        user.setName("Default");
       } else {
         user.setName(githubUser.getName());
       }

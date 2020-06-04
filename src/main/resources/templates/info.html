@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!-- 主页 -->
+<head>
+    <title>小小校园</title>
+    <meta http-equiv="Conteno-Type" content="text/html" ; charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/bootstrap-theme.min.css}">
+    <link rel="stylesheet" th:href="@{/css/info.css}">
+    <!--    <script th:href="@{/js/bootstrap.min.js}" type="application/javascript"></script>-->
+
+    <!-- 设置标签logo -->
+    <link rel="icon" th:href="@{/img/icon.png}" type="image/x-icon"/>
+    <script th:src="@{/js/jquery-3.4.1.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}" type="application/javascript"></script>
+    <!--    <script th:src="@{/js/community.js}" type="application/javascript"></script>-->
+</head>
+<body class="body">
+
+<!-- 引入导航栏 -->
+<div th:insert="navigation :: nav"></div>
+
+<div class="container-fluid main">
+    <div class="row">
+        <!-- 当屏幕尺寸为large的时候，这部分占据屏幕的宽度的9份(总的为12份)，当屏幕尺寸为md，sm，xs的时候都是占据整个屏幕-->
+        <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
+            <h3><span aria-hidden="true" th:text="${infoDTO.getTitle()}"></span></h3>
+            <span class="text-desc info-menu">
+                作者：<span th:text="${infoDTO.user.name}"></span> |
+                发布时间：<span th:text="${#dates.format(infoDTO.gmtCreate,'yyyy-MM-dd HH:mm')}"></span> |
+                阅读数： <span th:text="${infoDTO.viewCount}"></span>
+            </span>
+
+            <hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+                <textarea style="display:none;" th:text="${infoDTO.getDescription()}"></textarea>
+            </div>
+            <hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <a th:href="@{'/publish/'+${infoDTO.getId()}}" class="info-menu"><span class="glyphicon glyphicon-pencil" aria-hidden="true"> 编辑</span></a>
+            </div>
+            <hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        </div>
+        <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
+            <!-- 发起人 -->
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <h4>发起人</h4>
+                <div class="media">
+                    <div class="media-left">
+                        <span href="#">
+                            <img class="media-object media-pic img-circle" th:src="${infoDTO.getUser().getAvatarUrl()}">
+                        </span>
+                    </div>
+                    <div class="media-body">
+                        <h5 class="media-heading">
+                            <span th:text="${infoDTO.getUser().getName()}"></span>
+                        </h5>
+                    </div>
+                </div>
+            </div>
+            <hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <!--相关问题-->
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <h4>相关问题</h4>
+                <ul class="question-related"></ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

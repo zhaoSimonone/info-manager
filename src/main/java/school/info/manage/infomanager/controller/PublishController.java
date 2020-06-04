@@ -20,9 +20,6 @@ public class PublishController {
   @Autowired
   private InfoMapper infoMapper;
 
-  @Autowired
-  private UserMapper userMapper;
-
   //发起get请求返回页面
   @GetMapping("/publish")
   public String publish() {
@@ -56,23 +53,8 @@ public class PublishController {
       return "publish";
     }
 
-    User user = null;
-    //从cookie中得到token，然后使用这个token区数据库中查找，看是否能找到对应的用户
-    Cookie[] cookies = request.getCookies();
-    if (cookies != null) {
-      for (Cookie cookie : cookies) {
-        if ("token".equals(cookie.getName())) {
-          String token = cookie.getValue();
-          //然后从数据库中去寻找，是否存在这个token，有的话则返回这个token对应的user
-          user = userMapper.findUserByToken(token);
-          //如果有这个用户，则将其写入session中
-          if (user != null) {
-            request.getSession().setAttribute("user", user);
-          }
-          break;
-        }
-      }
-    }
+    User user = (User) request.getSession().getAttribute("user");
+
     if (user == null) {
       model.addAttribute("error", "用户未登录");
       return "publish";

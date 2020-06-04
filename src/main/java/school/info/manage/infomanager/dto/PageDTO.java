@@ -13,6 +13,9 @@ import java.util.List;
 @Data
 @Slf4j
 public class PageDTO {
+  /**
+   * 当前页查询到的所有info
+   */
   private List<InfoDTO> infoDTOList;
 
   //返回到上一页
@@ -106,5 +109,20 @@ public class PageDTO {
     } else {
       this.showEndPage = false;
     }
+  }
+
+  /**
+   * 当数据库中没有对应的数据的时候，则一条也不显示
+   */
+  public void setPageWhileCountEqualsZero(){
+    pages.add(1);
+    //返回到上一页
+    showPrevious = false;
+    //返回到第一页
+    showFirstPage = false;
+    //返回到下一页
+    showNext = false;
+    //返回到最后一页
+    showEndPage = false;
   }
 }

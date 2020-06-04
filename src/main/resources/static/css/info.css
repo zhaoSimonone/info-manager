@@ -21,3 +21,12 @@
     font-weight: normal;
     color: #999999;
 }
+.list-group-customer{
+    margin: 15px;
+}
+
+.info-menu {
+    color: #999;
+    font-size: 13px;
+    margin-bottom: 15px;
+}
