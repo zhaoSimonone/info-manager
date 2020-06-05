@@ -1,9 +1,6 @@
 package school.info.manage.infomanager.mapper;
 
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Component;
 import school.info.manage.infomanager.model.User;
 
@@ -28,6 +25,9 @@ public interface UserMapper {
 
 
   @Select("select * from user where account_id = #{id}")
-  User findUserByAccountId(@Param("id") Integer id);
+  User findUserByAccountId(@Param("id") String id);
+
+  @Update("update user set name = #{name}, token = #{token}, gmt_create = #{gmtCreate}, gmt_modified = #{gmtModified} where account_id = #{accountId}")
+  void update(User user);
 
 }

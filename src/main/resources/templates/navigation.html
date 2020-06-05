@@ -30,7 +30,7 @@
                     </li>
                     <!-- 只有session中没有user的信息的时候，才允许用户登录 -->
                     <li th:if="${session.user == null}">
-                        <a href="https://github.com/login/oauth/authorize?client_id=1db7187bf4bd2227f3b6&redirect_uri=http://localhost:8887/callback&scope=user&state=1">
+                        <a href="https://gitee.com/oauth/authorize?client_id=1007b2598d3da26776d554011c1598c42df38200a3270e50bb71ff005e6b58e3&response_type=code&redirect_uri=http://localhost:8887/oauth/callback/gitee&state=1">
                             登录
                         </a>
                     </li>
@@ -43,7 +43,7 @@
                         <ul class="dropdown-menu">
                             <li><a th:href="@{/profile/myPublish}">我的发布</a></li>
                             <li><a href="#">个人资料</a></li>
-                            <li><a href="#">退出登录</a></li>
+                            <li><a th:href="@{/loginOut}">退出登录</a></li>
                         </ul>
                     </li>
                 </ul>

@@ -47,7 +47,7 @@ public class PageDTO {
     //总的分页的数量
     Integer totalPage;
     //计算
-    if (totalCount * 2 == 0) {
+    if (totalCount % 2 == 0) {
       totalPage = totalCount / size;
     } else {
       totalPage = totalCount / size + 1;

@@ -4,31 +4,33 @@ import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
 import org.springframework.stereotype.Component;
-import school.info.manage.infomanager.dto.AccessTokenDTO;
-import school.info.manage.infomanager.dto.GithubUser;
+import school.info.manage.infomanager.dto.GiteeAccessTokenDTO;
+import school.info.manage.infomanager.dto.GiteeUser;
+import school.info.manage.infomanager.dto.ResponseDTO;
 
 import java.io.IOException;
 
 //将当前类初始化为Spring的上下文 -IOC
 @Component
 @Slf4j
-public class GithubProvider {
+public class GiteeProvider {
 
-  public String getAccessToken(AccessTokenDTO accessTokenDTO) {
+  public String getAccessToken(GiteeAccessTokenDTO giteeAccessTokenDTO) {
     MediaType mediaType = MediaType.get("application/json; charset=utf-8");
 
     OkHttpClient client = new OkHttpClient();
 
-    RequestBody body = RequestBody.create(mediaType, JSON.toJSONString(accessTokenDTO));
+    RequestBody body = RequestBody.create(mediaType, JSON.toJSONString(giteeAccessTokenDTO));
+    //return "https://gitee.com/oauth/token?grant_type=authorization_code&code=" + code + "&client_id=" + GITEE_CLIENT_ID + "&redirect_uri=" + REDIRECT_URI + "&client_secret=" + GITEE_CLIENT_SECRET;
     Request request = new Request.Builder()
-            .url("https://github.com/login/oauth/access_token")
+            .url("https://gitee.com/oauth/token")
             .post(body)
             .build();
     try (Response response = client.newCall(request).execute()) {
-
       String str = response.body().string();
       log.info("response.body: " + str);
-      String token = str.split("&")[0].split("=")[1];
+      ResponseDTO responseDTO = JSON.parseObject(str, ResponseDTO.class);
+      String token = responseDTO.getAccess_token();
       log.info("token: " + token);
       return token;
     } catch (IOException e) {
@@ -37,15 +39,16 @@ public class GithubProvider {
     return null;
   }
 
-  public GithubUser getUser(String accessToken) {
+  public GiteeUser getUser(String accessToken) {
     OkHttpClient client = new OkHttpClient();
-    Request request = new Request.Builder().url("https://api.github.com/user?access_token=" + accessToken).build();
+    //return "" + accessToken;
+    Request request = new Request.Builder().url("https://gitee.com/api/v5/user?access_token=" + accessToken).build();
     try (Response response = client.newCall(request).execute()) {
       String str = response.body().string();
       //TODO JSON.parseObject
       //将str的JSON字符串，自动解析并转化为Java的类对象
-      GithubUser githubUser = JSON.parseObject(str, GithubUser.class);
-      return githubUser;
+      GiteeUser giteeUser = JSON.parseObject(str, GiteeUser.class);
+      return giteeUser;
     } catch (IOException e) {
       e.printStackTrace();
     }
