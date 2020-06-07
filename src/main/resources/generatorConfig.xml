@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <context id="DB2Tables" targetRuntime="MyBatis3">
+        <plugin type="org.mybatis.generator.plugins.RowBoundsPlugin"></plugin>
+        <!--  配置JDBC连接 -->
+        <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
+                        connectionURL="jdbc:mysql://localhost:3306/info?useSSL=false"
+                        userId="root"
+                        password="123456">
+        </jdbcConnection>
+
+        <!-- -->
+        <javaTypeResolver>
+            <property name="forceBigDecimals" value="false"/>
+        </javaTypeResolver>
+
+        <!-- 配置model的保存路径 -->
+        <javaModelGenerator targetPackage="school.info.manage.infomanager.model" targetProject="src/main/java">
+            <property name="enableSubPackages" value="true"/>
+            <!-- 有空格的话自动trim掉 -->
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+
+        <sqlMapGenerator targetPackage="mapper" targetProject="src/main/resources">
+            <property name="enableSubPackages" value="true"/>
+        </sqlMapGenerator>
+
+        <!-- 希望以什么方式生成mapper，xml或者是annotation -->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="school.info.manage.infomanager.mapper" targetProject="src/main/java">
+            <property name="enableSubPackages" value="true"/>
+        </javaClientGenerator>
+
+        <table tableName="user" domainObjectName="User"></table>
+        <table tableName="info" domainObjectName="Info">
+<!--            <columnOverride column="description" javaType="java.lang.String" jdbcType="text" />-->
+        </table>
+
+    </context>
+</generatorConfiguration>

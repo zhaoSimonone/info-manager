@@ -25,7 +25,20 @@
         <!-- 当屏幕尺寸为large的时候，这部分占据屏幕的宽度的9份(总的为12份)，当屏幕尺寸为md，sm，xs的时候都是占据整个屏幕-->
         <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
             <h2><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span> 发现</h2>
-            <hr>
+            <ul class="nav nav-tabs">
+                <li role="presentation" class="active">
+                    <a th:href="@{/}">最新</a>
+                </li>
+                <li role="presentation" class="active">
+                    <a th:href="@{/}">最热</a>
+                </li>
+                <li role="presentation" class="active">
+                    <a th:href="@{/}">七天最热</a>
+                </li>
+                <li role="presentation" class="active">
+                    <a th:href="@{/}">公告</a>
+                </li>
+            </ul>
             <div class="media" th:each="infoDTO : ${pageDTO.getInfoDTOList()}">
                 <div class="media-left">
                     <a href="#">
@@ -37,7 +50,7 @@
                         <a th:href="@{'/info/'+ ${infoDTO.getId()}}" th:text="${infoDTO.getTitle()}"></a>
                     </h4>
                     <!--如果description太长，则截取一部分-->
-                    <span th:text="${infoDTO.getDescription().length() > 20}?${infoDTO.getDescription().substring(0,20)}:${infoDTO.getDescription()}"></span><br>
+                    <span th:text="${infoDTO.getDescription()}"></span><br>
                     <span class="media-text"><span th:text="${infoDTO.getCommentCount()}"/>个回复 .<span th:text="${infoDTO.getViewCount()}"/>次浏览.<span th:text="${#dates.format(infoDTO.getGmtCreate(),'yyyy-MM-dd')}"/></span>
                 </div>
             </div>

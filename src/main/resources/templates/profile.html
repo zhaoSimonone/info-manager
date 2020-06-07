@@ -33,7 +33,7 @@
                 <div class="media-body">
                     <h4 class="media-heading" th:text="${infoDTO.getTitle()}"></h4>
                     <!--如果description太长，则截取一部分-->
-                    <span th:text="${infoDTO.getDescription().length() > 20}?${infoDTO.getDescription().substring(0,20)}:${infoDTO.getDescription()}"></span><br>
+                    <span th:text="${infoDTO.getDescription()}"></span><br>
                     <span class="media-text"><span th:text="${infoDTO.getCommentCount()}"/>个回复 .<span th:text="${infoDTO.getViewCount()}"/>次浏览.<span th:text="${#dates.format(infoDTO.getGmtCreate(),'yyyy-MM-dd')}"/></span>
                 </div>
             </div>

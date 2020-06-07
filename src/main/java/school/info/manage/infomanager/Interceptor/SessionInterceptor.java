@@ -1,18 +1,15 @@
 package school.info.manage.infomanager.Interceptor;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.HandlerInterceptor;
-import org.springframework.web.servlet.ModelAndView;
 import school.info.manage.infomanager.mapper.UserMapper;
 import school.info.manage.infomanager.model.User;
+import school.info.manage.infomanager.model.UserExample;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
@@ -21,7 +18,7 @@ import java.util.List;
 @Service
 public class SessionInterceptor implements HandlerInterceptor {
 
-  @Autowired
+  @Autowired(required = true)
   private UserMapper userMapper;
 
   @Override
@@ -35,10 +32,15 @@ public class SessionInterceptor implements HandlerInterceptor {
         if ("token".equals(cookie.getName())) {
           String token = cookie.getValue();
           //然后从数据库中去寻找，是否存在这个token，有的话则返回这个token对应的user
-          User user = userMapper.findUserByToken(token);
+
+          //使用mappser生成的的查询。需要表达的sql意思为：select * from user where token = #{token}
+          UserExample userExample = new UserExample();
+          userExample.createCriteria()
+                  .andTokenEqualTo(token);
+          List<User> users = userMapper.selectByExample(userExample);
           //如果有这个用户，则将其写入session中
-          if (user != null) {
-            request.getSession().setAttribute("user", user);
+          if (users.size() != 0) {
+            request.getSession().setAttribute("user", users.get(0));
           }
           break;
         }

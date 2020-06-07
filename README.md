@@ -26,3 +26,25 @@ create table info
 
 alter table info alter column comment_count set default 0;
 ```
+
+## MyBatis
+导入插件
+```xml
+<plugin>
+    <groupId>org.mybatis.generator</groupId>
+    <artifactId>mybatis-generator-maven-plugin</artifactId>
+    <version>1.4.0</version>
+    <dependencies>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.20</version>
+        </dependency>
+    </dependencies>
+</plugin>
+```
+执行命令
+```
+mvn -Dmybatis.generator.overwrite=true mybatis-generator:generate
+```
+
